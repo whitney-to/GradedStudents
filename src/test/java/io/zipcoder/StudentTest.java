@@ -109,7 +109,7 @@ public class StudentTest {
 
         // Then
         Assert.assertEquals(expected,output);
-        System.out.println(output);
+        //System.out.println(output);
     }
 
     @Test
@@ -125,7 +125,7 @@ public class StudentTest {
 
         // Then
         Assert.assertEquals(expected,output);
-        System.out.println(output);
+        //System.out.println(output);
     }
 
     @Test
@@ -143,7 +143,7 @@ public class StudentTest {
 
         // Then
         Assert.assertEquals(expected,output);
-        System.out.println(output);
+        //System.out.println(output);
     }
 
     @Test
@@ -158,7 +158,7 @@ public class StudentTest {
 
         // Then
         Assert.assertEquals(expected,output);
-        System.out.println(output);
+        //System.out.println(output);
     }
 
     @Test
@@ -176,6 +176,6 @@ public class StudentTest {
 
         // Then
         Assert.assertEquals(expected,output);
-        System.out.println(output);
+        //System.out.println(output);
     }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Student {
+public class Student implements Comparable<Student>{
     private String firstName;
     private String lastName;
     private ArrayList<Double> examScores;
@@ -69,5 +69,21 @@ public class Student {
         return "Student Name : "+firstName+" "+lastName+"\n"+
                             "> Average Score: "+getAverageExamScore()+"\n"+
                             "> "+getExamScores();
+    }
+
+    @Override
+    public int compareTo(Student other) {
+        if(this.getAverageExamScore() < other.getAverageExamScore()){
+            return 1;
+        } else if(this.getAverageExamScore() > other.getAverageExamScore()){
+            return -1;
+        } else{
+            if(this.getFirstName().charAt(0) < other.getFirstName().charAt(0)){
+                return 1;
+            }
+            else{
+                return -1;
+            }
+        }
     }
 }

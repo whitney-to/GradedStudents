@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Map;
 
 public class ClassroomTest {
     @Test
@@ -87,7 +88,7 @@ public class ClassroomTest {
 
         // Then
         Assert.assertEquals(expected,output,0.1);
-        System.out.println(output);
+//        System.out.println(output);
     }
 
     @Test
@@ -98,18 +99,119 @@ public class ClassroomTest {
         Double[] examScores = { 100.0, 150.0, 250.0, 0.0 };
         Student student = new Student("Leon", "Hunter", examScores);
 
+        Student[] expectedPreEnrollment = new Student[1];
+        Student[] expectedPostEnrollment = new Student[]{student};
+
         // When
-        Student[] preEnrollment = classroom.getStudents();
+        // Then
+        Student[] actualPreEnrollment = classroom.getStudents();
+        String preEnrollmentAsString = Arrays.toString(actualPreEnrollment);
+        Assert.assertEquals(expectedPreEnrollment,actualPreEnrollment);
+
         classroom.addStudent(student);
-        Student[] postEnrollment = classroom.getStudents();
+
+        Student[] actualPostEnrollment = classroom.getStudents();
+        String postEnrollmentAsString = Arrays.toString(actualPostEnrollment);
+        Assert.assertEquals(expectedPostEnrollment,actualPostEnrollment);
+
+        // Print
+//        System.out.println("===========================");
+//        System.out.println(preEnrollmentAsString);
+//        System.out.println("===========================");
+//        System.out.println(postEnrollmentAsString);
+    }
+
+    @Test
+    public void testRemoveStudent(){
+        // : Given
+        int maxNumberOfStudents = 1;
+        Classroom classroom = new Classroom(maxNumberOfStudents);
+        Double[] examScores = { 100.0, 150.0, 250.0, 0.0 };
+        Student student = new Student("Leon", "Hunter", examScores);
+
+        Student[] expectedPreRemove = new Student[]{student};
+        Student[] expectedPostRemove = new Student[]{null};
+
+        // When
+        // Then
+        classroom.addStudent(student);
+        Student[] actualPreRemove = classroom.getStudents();
+        Assert.assertEquals(expectedPreRemove,actualPreRemove);
+
+        classroom.removeStudent(student.getFirstName(),student.getLastName());
+
+        Student[] actualPostRemove = classroom.getStudents();
+        Assert.assertEquals(expectedPostRemove,actualPostRemove);
+
+        // Print
+//        String preRemove = Arrays.toString(actualPreRemove);
+//        String postRemove = Arrays.toString(actualPostRemove);
+//
+//        System.out.println("===========================");
+//        System.out.println(preRemove);
+//        System.out.println("===========================");
+//        System.out.println(postRemove);
+    }
+
+    @Test
+    public void testGetStudentsByScore(){
+        // Given
+        Double[] examScores1 = { 200.0, 200.0, 200.0, 200.0 };
+        Double[] examScores2 = { 100.0, 100.0, 100.0, 100.0 };
+        Double[] examScores3 = { 300.0, 300.0, 300.0, 300.0 };
+
+        Student student1 = new Student("", "", examScores1);
+        Student student2 = new Student("", "", examScores2);
+        Student student3 = new Student("", "", examScores3);
+
+        Student[] expectedBeforeSort = {student1,student2,student3};
+        Student[] expectedAfterSort = {student3,student1,student2};
+
+        // When
+        Classroom classroom = new Classroom(new Student[]{student1,student2,student3});
+
+        Student[] actualBeforeSort = classroom.getStudents();
+        Assert.assertEquals(expectedBeforeSort,actualBeforeSort);
+
+        classroom.getStudentsByScore();
+        Student[] actualAfterSort = classroom.getStudents();
 
         // Then
-        String preEnrollmentAsString = Arrays.toString(preEnrollment);
-        String postEnrollmentAsString = Arrays.toString(postEnrollment);
+        Assert.assertEquals(expectedAfterSort,actualAfterSort);
+    }
 
-        System.out.println("===========================");
-        System.out.println(preEnrollmentAsString);
-        System.out.println("===========================");
-        System.out.println(postEnrollmentAsString);
+    @Test
+    public void testGetGradeBook(){
+        // Given
+        Student student1 = new Student("", "", new Double[] {105.0});
+        Student student2 = new Student("", "", new Double[] {100.0});
+        Student student3 = new Student("", "", new Double[] {100.0});
+        Student student4 = new Student("", "", new Double[] {80.0});
+        Student student5 = new Student("", "", new Double[] {100.0});
+        Student student6 = new Student("", "", new Double[] {60.0});
+        Student student7 = new Student("", "", new Double[] {100.0});
+        Student student8 = new Student("", "", new Double[] {40.0});
+        Student student9 = new Student("", "", new Double[] {20.0});
+        Student student10 = new Student("", "", new Double[] {5.0});
+        // average score = 71.0
+
+        Classroom classroom = new Classroom(new Student[]{student1,student2,student3,
+                    student4,student5,student6,student7,student8,student9,student10});
+
+        Student[] studentA = new Student[]{student1,student2,student3,student4,student5,student7};
+        Student[] studentB = new Student[]{student6};
+        Student[] studentC = new Student[]{student8};
+        Student[] studentD = new Student[]{student9};
+        Student[] studentF = new Student[]{student10};
+
+        // When
+        Map<Character, Student[]> gradeBook = classroom.getGradeBook();
+
+        // Then
+        Assert.assertEquals(studentA,gradeBook.get('A')); // students with score > 63.9
+        Assert.assertEquals(studentB,gradeBook.get('B')); // students with score > 50.4
+        Assert.assertEquals(studentC,gradeBook.get('C')); // students with score > 35.5
+        Assert.assertEquals(studentD,gradeBook.get('D')); // students with score > 7.81
+        Assert.assertEquals(studentF,gradeBook.get('F')); // students with score <= 7.81
     }
 }
